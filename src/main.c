@@ -15,9 +15,8 @@
 #include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#define WIDTH 800
-#define HEIGHT 800
-#define MAX_ITER 64
+#define WIDTH 900
+#define HEIGHT 600
 
 void	hook(void *param)
 {
@@ -26,51 +25,80 @@ void	hook(void *param)
 	fractal = param;
 	if (mlx_is_key_down(fractal->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(fractal->mlx);
-	if (mlx_is_key_down(fractal->mlx, MLX_KEY_UP))
-	{
+	if (mlx_is_key_down(fractal->mlx, MLX_KEY_Z))
+	{ //zoom_in
 		mlx_delete_image(fractal->mlx, fractal->img);
 		fractal->img = mlx_new_image(fractal->mlx, WIDTH, HEIGHT);
-		// fractal->img->instances[0].y -= 5;
-		fractal->x = decrease_percentage(fractal->x, 30);
-		fractal->_x = decrease_percentage(fractal->_x, 30);
-		fractal->y = decrease_percentage(fractal->y, 30);
-		fractal->_y = -1 * fractal->y;
+		// fractal->max_iter += get_percentage(fractal->max_iter, 10);
+		fractal->x -= get_percentage(fractal->x, 30);
+		fractal->_x -= get_percentage(fractal->_x, 30);
+		fractal->y -= get_percentage(fractal->y, 30);
+		fractal->_y -= get_percentage(fractal->_y, 30);
 		draw_fractal(fractal);
-		printf("f->x=%f\n_x=%f\ny=%f\n_y=%f\n", fractal->x, fractal->_x,
-				fractal->y, fractal->_y);
+		// printf("f->x=%f\n_x=%f\ny=%f\n_y=%f\n", fractal->x, fractal->_x,
+		// 		fractal->y, fractal->_y);
+	}
+	if (mlx_is_key_down(fractal->mlx, MLX_KEY_X))
+	{ //zoom_out
+		mlx_delete_image(fractal->mlx, fractal->img);
+		fractal->img = mlx_new_image(fractal->mlx, WIDTH, HEIGHT);
+		// fractal->max_iter -= get_percentage(fractal->max_iter, 5);
+		fractal->x += get_percentage(fractal->x, 30);
+		fractal->_x += get_percentage(fractal->_x, 30);
+		fractal->y += get_percentage(fractal->y, 30);
+		fractal->_y += get_percentage(fractal->_y, 30);
+		draw_fractal(fractal);
+		// printf("f->x=%f\n_x=%f\ny=%f\n_y=%f\n", fractal->x, fractal->_x,
+		// 		fractal->y, fractal->_y);
+	}
+	if (mlx_is_key_down(fractal->mlx, MLX_KEY_UP))
+	{ //go_up
+		mlx_delete_image(fractal->mlx, fractal->img);
+		fractal->img = mlx_new_image(fractal->mlx, WIDTH, HEIGHT);
+		fractal->y += get_percentage(fractal->y, 10);
+		fractal->_y -= get_percentage(fractal->_y, 10);
+		draw_fractal(fractal);
 	}
 	if (mlx_is_key_down(fractal->mlx, MLX_KEY_DOWN))
-		fractal->img->instances[0].y += 5;
+	{ //go_down
+		mlx_delete_image(fractal->mlx, fractal->img);
+		fractal->img = mlx_new_image(fractal->mlx, WIDTH, HEIGHT);
+		fractal->y -= get_percentage(fractal->y, 10);
+		fractal->_y += get_percentage(fractal->_y, 10);
+		draw_fractal(fractal);
+	}
 	if (mlx_is_key_down(fractal->mlx, MLX_KEY_LEFT))
-		fractal->img->instances[0].x -= 5;
+	{ //go_left
+		// fractal->img->instances[0].x -= 5;
+		mlx_delete_image(fractal->mlx, fractal->img);
+		fractal->img = mlx_new_image(fractal->mlx, WIDTH, HEIGHT);
+		fractal->x -= get_percentage(fractal->x, 10);
+		fractal->_x += get_percentage(fractal->_x, 10);
+		draw_fractal(fractal);
+		// printf("f->x=%f\n_x=%f\ny=%f\n_y=%f\n", fractal->x, fractal->_x,
+		// 		fractal->y, fractal->_y);
+	}
 	if (mlx_is_key_down(fractal->mlx, MLX_KEY_RIGHT))
-		fractal->img->instances[0].x += 5;
+	{ //go_right
+		mlx_delete_image(fractal->mlx, fractal->img);
+		fractal->img = mlx_new_image(fractal->mlx, WIDTH, HEIGHT);
+		fractal->x += get_percentage(fractal->x, 10);
+		fractal->_x -= get_percentage(fractal->_x, 10);
+		draw_fractal(fractal);
+	}
+	printf("f->x=%f\n_x=%f\ny=%f\n_y=%f\nmax_iter=%d\n", fractal->x,
+			fractal->_x, fractal->y, fractal->_y, fractal->max_iter);
 }
 
-float	decrease_percentage(float x1, float percentage)
+float	get_percentage(float x1, float percentage)
 {
 	float	temp;
 
 	temp = x1;
-	temp -= (x1 * percentage) / 100;
+	temp = (x1 * percentage) / 100;
 	return (temp);
 }
-/* void	draw(void)
-{
-	int	x;
-	int	y;
 
-	x = 0;
-	y = 0;
-	while (x < WIDTH)
-	{
-		while (y < HEIGHT)
-		{
-			y++;
-		}
-		x++;
-	}
-} */
 // 'Encodes' four individual bytes into an int.
 int	get_rgba(int r, int g, int b, int a)
 {
@@ -89,9 +117,12 @@ float	remap(int value, float l1, float h1, float l2, float h2)
 
 void	draw_fractal(t_fractal *fractal)
 {
-	int	color;
+	int		color;
+	float	bright;
+	int		o_bright;
+	float	hue;
 
-	float zx, zy, cx, cy, tempx;
+	float zx, zy, cx, cy, tempx, z, continues_iter;
 	int x, y;
 	int maxx, maxy, iter;
 	maxx = WIDTH;
@@ -103,41 +134,47 @@ void	draw_fractal(t_fractal *fractal)
 		{
 			//c_real
 			// cx = remap(x, 0, WIDTH, -2.25, 0.75);
-			cx = remap(x, 0, WIDTH, fractal->_x, fractal->x);
-			// cx = remap(x, 0, WIDTH, -1.575, 0.525);
-			// cx = remap(x, 0, WIDTH, -1.1025, 0.3675);
+			cx = remap(x, 0, fractal->width, fractal->_x, fractal->x);
 			//c_imag
 			// cy = remap(y, 0, HEIGHT, -1.5, 1.5);
-			cy = remap(y, 0, HEIGHT, fractal->_y, fractal->y);
-			// cy = remap(y, 0, HEIGHT, -1.05, 1.05);	//30%
-			// cy = remap(y, 0, HEIGHT, -0.735, 0.735);	//30%
+			cy = remap(y, 0, fractal->height, fractal->_y, fractal->y);
 			//z_real
 			zx = 0;
 			//z_imag
 			zy = 0;
-			iter = 1;
+			iter = 0;
 			// mag = sqrt((zx*zx) + (zy * zy));
-			while (sqrt((zx * zy + zy * zy)) < 4 && (iter < MAX_ITER))
+			while ((zx * zy + zy * zy) < 2 && (++iter < fractal->max_iter))
 			{
 				tempx = (zx * zx) - (zy * zy) + cx;
 				zy = (2 * zx * zy) + cy;
 				zx = tempx;
-				iter++;
+				z = (zx + zy);
 				//display the created fractal
 			}
-			int bright = remap(iter, 0 ,MAX_ITER,0,255);
-			if ((iter == MAX_ITER) || bright < 20)
+			bright = remap(iter, 0, fractal->max_iter, 0, 255);
+			o_bright = get_percentage(fractal->max_iter, 75);
+			// if ((iter == (fractal->max_iter))
+			// 	|| bright < log2(fractal->max_iter))
+			if (iter == (fractal->max_iter))
 			{
-			bright = 0;		
-				// color = create_trgb(0, 0, 0, 20);
-				color = create_trgb(bright,bright,bright,255);
-				mlx_put_pixel(fractal->img, x, y, color);
+				// interior, part of set, black
+				bright = 0;
+				color = create_trgb(0, 0, 0, 0);
+				mlx_put_pixel(fractal->img, x, y, 255);
 			}
 			else
 			{
-				// color = create_trgb((iter % 3) * iter * 40, (iter % 2) * iter
-				// 		* 40, 0, 200);
-				color = create_trgb(bright,bright,bright,255);
+				// continues_iter = iter + 1 - log(log2(fabsf(z)));
+				continues_iter = iter + 1 - (log(2) / z) / log(2);
+				hue = 255 * continues_iter / fractal->max_iter;
+				// hue = iter*255;
+				// color = get_rgba((iter % 3) * iter * 40, (iter % 2) * iter
+						// * 40,
+				// 		0, 255);
+				// color = create_trgb(255, bright, bright, bright);
+				// color = get_rgba(bright, bright, bright, 255);
+				color = get_rgba(continues_iter, hue, 0, 255);
 				mlx_put_pixel(fractal->img, x, y, color);
 				// memset(img->pixels, 255, img->width * img->height
 				// * sizeof(int));
@@ -153,21 +190,27 @@ int32_t	main(void)
 	t_fractal	fractal;
 
 	// mlx_t	*mlx;
-	fractal.y = 1.5;
+	fractal.y = 2.000000000000;
+	fractal.x = 2.857142857143;
 	fractal._y = -1 * fractal.y;
-	fractal.x = 0.75;
-	fractal._x = -2.25;
+	fractal._x = -1 * fractal.x;
+	fractal.max_iter = 150;
+	fractal.height = HEIGHT;
+	fractal.width = WIDTH;
 	if (!(fractal.mlx = mlx_init(WIDTH, HEIGHT, "fract_ol", true)))
 		return (EXIT_FAILURE);
 	fractal.img = mlx_new_image(fractal.mlx, WIDTH, HEIGHT);
-
+	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
 	// img->enabled = true;
-	// memset(fractal.img->pixels, 255, fractal.img->width * fractal.img->height * sizeof(int));
+	// memset(fractal.img->pixels, 255, fractal.img->width * fractal.img->height
+	// * sizeof(int));
 	// mlx_image_to_window(mlx, img, 5, 0);
 	// fractal(-1.75, -0.25, 0.25, 0.45);
 	draw_fractal(&fractal);
 	// mlx_loop_hook(fractal.mlx, &hook(), fractal.mlx);
 	mlx_loop_hook(fractal.mlx, &hook, &fractal);
+	printf("END====\nf->x=%f\n_x=%f\ny=%f\n_y=%f\nmax_iter=%d", fractal.x,
+			fractal._x, fractal.y, fractal._y, fractal.max_iter);
 	mlx_loop(fractal.mlx);
 	mlx_terminate(fractal.mlx);
 	return (EXIT_SUCCESS);
