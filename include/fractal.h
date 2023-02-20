@@ -31,6 +31,6 @@ float			remap(int value, float l1, float h1, float l2, float h2);
 int				create_trgb(int t, int r, int g, int b);
 int	get_rgba(int r, int g, int b, int a); //mlx42
 void			draw_fractal(t_fractal *fractal);
-float			get_percentage(float x1, float percentage);
+float		 	get_percentage(float x1, float percentage);
 
 #endif
