@@ -31,9 +31,10 @@ typedef struct s_fractal
 	double long	_y;
 	double long	x;
 	double long	_x;
-	double 	re_factor;
-	double 	im_refactor;
+	double		re_factor;
+	double		im_factor;
 	int			max_iter;
+	int			color;
 }				t_fractal;
 
 float			remap(int value, float l1, float h1, float l2, float h2);
@@ -41,5 +42,6 @@ int				create_trgb(int t, int r, int g, int b);
 int	get_rgba(int r, int g, int b, int a); //mlx42
 void			draw_fractal_mandelbrot(t_fractal *fractal);
 float			get_percentage(float x1, float percentage);
+void			re_factor(t_fractal *fractal);
 
 #endif
