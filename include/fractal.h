@@ -13,10 +13,10 @@
 #ifndef FRACTAL_H
 # define FRACTAL_H
 # include "./MLX42/MLX42.h"
+# include <unistd.h>
 
-typedef struct s_screen
-{
-}				t_screen;
+# define WIDTH 800
+# define HEIGHT 800
 typedef struct s_fractal
 {
 	mlx_t		*mlx;
@@ -27,15 +27,29 @@ typedef struct s_fractal
 	double		height;
 	double		offset;
 	double		zoom_level;
+	double		zoom;
 	double long	y;
 	double long	_y;
 	double long	x;
 	double long	_x;
+	double long	r;
+	double		cx;
+	double		cy;
 	double		re_factor;
 	double		im_factor;
 	int			max_iter;
 	int			color;
+	char		set;
+	float		offset_x;
+	float		offset_y;
 }				t_fractal;
+typedef struct s_screen
+{
+	float		offset_x;
+	float		offset_y;
+}				t_screen;
+
+typedef void	(*t_fractal_set_list)(t_fractal *fractal);
 
 float			remap(int value, float l1, float h1, float l2, float h2);
 int				create_trgb(int t, int r, int g, int b);
@@ -43,5 +57,8 @@ int	get_rgba(int r, int g, int b, int a); //mlx42
 void			draw_fractal_mandelbrot(t_fractal *fractal);
 float			get_percentage(float x1, float percentage);
 void			re_factor(t_fractal *fractal);
+void			draw_julia_set(t_fractal *fractal);
+void			reset_defaults(t_fractal *fractal);
+void			run_fractal(t_fractal *fractal);
 
 #endif
