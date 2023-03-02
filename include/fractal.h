@@ -54,11 +54,18 @@ typedef void	(*t_fractal_set_list)(t_fractal *fractal);
 float			remap(int value, float l1, float h1, float l2, float h2);
 int				create_trgb(int t, int r, int g, int b);
 int	get_rgba(int r, int g, int b, int a); //mlx42
+void			re_factor(t_fractal *fractal);
 void			draw_fractal_mandelbrot(t_fractal *fractal);
 float			get_percentage(float x1, float percentage);
-void			re_factor(t_fractal *fractal);
 void			draw_julia_set(t_fractal *fractal);
-void			reset_defaults(t_fractal *fractal);
+void			draw_burning_ship(t_fractal *fractal);
 void			run_fractal(t_fractal *fractal);
+//moves
+void			move_up(t_fractal *fractal);
+void			move_down(t_fractal *fractal);
+void			move_left(t_fractal *fractal);
+void			move_right(t_fractal *fractal);
+void			reset_defaults(t_fractal *fractal);
+void			my_hook(void *param);
 
 #endif
