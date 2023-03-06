@@ -71,10 +71,12 @@ void	reset_defaults(t_fractal *fractal)
 	fractal->width = WIDTH;
 	fractal->height = HEIGHT;
 	// fractal->y = 1.5;
-	fractal->_y = -2;
-	fractal->_x = -2;
-	fractal->x = 2;
-	fractal->y = 2;
+	fractal->_y = -4;
+	fractal->_x = -4;
+	fractal->x = 4;
+	fractal->y = 4;
+	fractal->scale_x = fabsl(fractal->x) + fabsl(fractal->_x);
+	fractal->scale_y = fabsl(fractal->y) + fabsl(fractal->_y);
 	// fractal->y = fractal->_y + (fractal->x - fractal->_x) * (fractal->height
 	// / fractal->width);
 	fractal->zoom = 1;

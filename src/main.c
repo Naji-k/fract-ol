@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "fractal.h"
-#include <math.h>
 #include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,7 +36,6 @@ int shuffle_color(int value)
 }
 
 
-
 void my_key_func(mlx_key_data_t keydata, void* param)
 {
 	t_fractal	*fractal;
@@ -45,52 +43,24 @@ void my_key_func(mlx_key_data_t keydata, void* param)
 	fractal = param;
 	
 	if (keydata.key == MLX_KEY_ESCAPE  && keydata.action == MLX_PRESS)
+	{
 		mlx_close_window(fractal->mlx);
+	}
 
  	if (keydata.key == MLX_KEY_Z  && keydata.action == MLX_PRESS)
 	{
-		// double center_x = (fractal->x + fractal->_x) / 2;
-		// fractal->x  -= center_x + fractal->x * 0.95;
-		// fractal->_x  -= center_x +  fractal->_x * 0.95;
-		// fractal->y  = fractal->y * 0.95;
-		// fractal->_y  = fractal->_y * 0.95;
-
 		fractal->x  = fractal->x  * 0.95;
 		fractal->_x  = fractal->_x * 0.95;
 		fractal->y  = fractal->y * 0.95;
 		fractal->_y  = fractal->_y * 0.95;
 
-
-		// double w_temp = fractal->width;
-		// double h_temp = fractal->height;
-
 		fractal->max_iter += 1;
-		// fractal->height = fractal->height * 1.05;
-		// fractal->width = fractal->width * 1.05;
-		
-		// double scale = 0.05;
-		// double offsetX = fractal->x ;
-		// double offsetY = fractal->y;
-		// double offset_X = fractal->_x ;
-		// double offset_Y = fractal->_y;
-		// printf("offsetX=%f\n,offsetY=%f\n", offsetX,offsetY);
 
-		// fractal->x -= fractal->x - fractal->offset_x ;
-		// fractal->_x -= fractal->_x -  fractal->offset_x ;
-		// fractal->y -= fractal->y - fractal->offset_y ;
-		// fractal->_y -= fractal->_y -  fractal->offset_y;
-		// fractal->zoom /= 1.05;
 		fractal->zoom_level +=1;
-		// move_left(fractal);
-		// move_up (fractal);
-		// re_factor(fractal);
-
-		// printf("\nscale=%Lf\n",fractal->x);
-		// draw_fractal_mandelbrot(fractal);
 		run_fractal(fractal);
 
-		printf("f->x=%Lf\n_x=%Lf\ny=%Lf\n_y=%Lf\nZ_level=%f\n", fractal->x, fractal->_x,
-			fractal->y, fractal->_y, fractal->zoom_level);
+		// printf("f->x=%Lf\n_x=%Lf\ny=%Lf\n_y=%Lf\nZ_level=%f\n", fractal->x, fractal->_x,
+		// 	fractal->y, fractal->_y, fractal->zoom_level);
 		// printf("width=%f\nhight=%f\n",fractal->width, fractal->height);
 	}
 	if (keydata.key == MLX_KEY_X  && keydata.action == MLX_PRESS)
@@ -106,7 +76,6 @@ void my_key_func(mlx_key_data_t keydata, void* param)
 		fractal->_y  = fractal->_y * 1.05;
 
 		fractal->zoom_level -=1;
-		// draw_fractal_mandelbrot(fractal);
 		run_fractal(fractal);
 
 	}
@@ -134,7 +103,7 @@ void my_key_func(mlx_key_data_t keydata, void* param)
 	if (keydata.key == MLX_KEY_D  && keydata.action == MLX_PRESS)
 	{//D print debugging
 
-	printf("f->x=%Lf\n_x=%Lf\ny=%Lf\n_y=%Lf\nmax_iter=%d\nfra.w=%f\n,fra.h=%f\nre_fac=%f\nim_fac=%f\n", fractal->x,
+		printf("f->x=%Lf\n_x=%Lf\ny=%Lf\n_y=%Lf\nmax_iter=%d\nfra.w=%f\n,fra.h=%f\nre_fac=%f\nim_fac=%f\n", fractal->x,
 			fractal->_x, fractal->y, fractal->_y, fractal->max_iter,fractal->width,fractal->height, fractal->re_factor, fractal->im_factor);
 	}
 	if (keydata.key ==MLX_KEY_P  && keydata.action == MLX_PRESS)
@@ -159,19 +128,18 @@ void my_key_func(mlx_key_data_t keydata, void* param)
 	}
 	if (keydata.key == MLX_KEY_T  && keydata.action == MLX_PRESS)
 	{
-		float X,Y,Z;
-		X = remap(fractal->pos_x,0,WIDTH,fractal->_x,fractal->x) ;
-		Y = remap(fractal->pos_y,0,HEIGHT,fractal->y,fractal->_y);
-		fractal->offset_x = X;
-		fractal->offset_y = Y;
-		Z = remap(40,0,WIDTH,fractal->_x,fractal->x);
-		fractal->_x += 0.2;
-		fractal->x += 0.2;
-		fractal->y += 0.2;
-		fractal->_y += 0.2;
-		printf("\nZ=%f\n",Z);
+		// float X,Y,Z;
+		// X = remap(fractal->pos_x,0,WIDTH,fractal->_x,fractal->x) ;
+		// Y = remap(fractal->pos_y,0,HEIGHT,fractal->y,fractal->_y);
+		// // fractal->offset_x = X;
+		// // fractal->offset_y = Y;
+		// Z = remap(40,0,WIDTH,fractal->_x,fractal->x);
+		// fractal->_x += 0.2;
+		// fractal->x += 0.2;
+		// fractal->y += 0.2;
+		// fractal->_y += 0.2;
+		// printf("\nZ=%f\n",Z);
 		// printf("screen.x=%d\nscreen.y=%d\nX_trans=%f\nY_trans=%f\n",fractal->pos_x,fractal->pos_y,X,Y);
-		draw_fractal_mandelbrot(fractal);
 
 	}
 	if (keydata.key == MLX_KEY_M  && keydata.action == MLX_PRESS)
@@ -196,15 +164,12 @@ void	my_scrollhook(double xdelta, double ydelta, void *param)
 	fractal = param;
 	if (ydelta > 0)
 	{
-		// mlx_get_mouse_pos(fractal->mlx, &fractal->pos_x, &fractal->pos_y);
-		// printf("screen.x=%d\nscreen.y=%d",fractal->pos_x,fractal->pos_y);
 
 		fractal->max_iter += 1;
 		fractal->height = fractal->height * 1.05;
 		fractal->width = fractal->width * 1.05;
 		fractal->zoom_level += 1;
 		run_fractal(fractal);
-		// draw_fractal_mandelbrot(fractal);
 	}
 	else if (ydelta < 0)
 	{
@@ -220,7 +185,6 @@ void	my_scrollhook(double xdelta, double ydelta, void *param)
 		// fractal->_y += get_percentage(fractal->_y, 30) + fractal->pos_y;
 		fractal->zoom_level -= 1;
 		run_fractal(fractal);
-		// draw_fractal_mandelbrot(fractal);
 	}
 	if (xdelta < 0)
 		puts("Sliiiide to the left!");
@@ -273,7 +237,7 @@ void re_factor (t_fractal *fractal)
 void	draw_fractal_mandelbrot(t_fractal *fractal)
 {
 	int		color;
-	double zx, zy, tempx, mu;
+	double zx, zy, tempx;
 	double continues_iter, mag;
 	int x, y;
 	int maxx, maxy, iter;
@@ -318,7 +282,7 @@ void	draw_fractal_mandelbrot(t_fractal *fractal)
 			else
 			{
 				mag = sqrt((zx * zx) + (zy * zy));
-				mu = iter - (log (log (mag))) / log(2);
+				// mu = iter - (log (log (mag))) / log(2);
 				continues_iter = iter + 1 - (log(2) / fabs(mag)) / log(2);
 				// color = get_rgba((iter % 3) * iter , (iter % 2) * iter * 40,
 				// 		100, 255);
@@ -429,97 +393,60 @@ void draw_burning_ship(t_fractal* fractal)
 
 void run_fractal(t_fractal* fractal)
 {
+	// mlx_delete_image(fractal->mlx,fractal->img);
 	render_fractal_set(fractal->set,fractal);
 }
 
+void check_leaks(void)
+{
+	system("leaks -q fractal");
+}
 
 int	main(int argc, char** argv)
 {
 
 	t_fractal	fractal;
 	reset_defaults(&fractal);
-	char *fractals[] = {"Mandelbrot" , "Julia", "Burning Ship"};
-	if (argc <  2)
+	atexit(check_leaks);
+	char *fractals[] = {"Mandelbrot" , "Julia", "Burning-Ship"};
+
+	if (!(fractal.mlx = mlx_init(WIDTH, HEIGHT, "fract_ol",true)))
+			return (EXIT_FAILURE);
+	fractal.img = mlx_new_image(fractal.mlx, WIDTH, HEIGHT);
+	mlx_image_to_window(fractal.mlx, fractal.img, 0, 0);
+
+	if (argc < 2)
 	{
 		int i;
 		i = 0;
-		while (i < 2)
+		while (i < 3)
 			printf("%s\n",fractals[i++]);
 	}
 	else if (argc == 2 && strcmp(argv[1], "Mandelbrot") == 0)
 	{
-		if (!(fractal.mlx = mlx_init(WIDTH, HEIGHT, "fract_ol",true)))
-			return (EXIT_FAILURE);
-
-		fractal.img = mlx_new_image(fractal.mlx, WIDTH, HEIGHT);
-
-		mlx_image_to_window(fractal.mlx, fractal.img, 0, 0);
 		fractal.set = 'M';
-		mlx_set_setting(MLX_STRETCH_IMAGE, 1);
-		// img->enabled = true;
-		// memset(fractal.img->pixels, 255, fractal.img->width * fractal.img->height
-		// * sizeof(int));
-		// mlx_image_to_window(mlx, img, 5, 0);
-		// fractal(-1.75, -0.25, 0.25, 0.45);
+		// mlx_set_setting(MLX_STRETCH_IMAGE, 1);
 		run_fractal(&fractal);
-		fractal.mlx->delta_time = 10.05;
-		mlx_key_hook(fractal.mlx,my_key_func,&fractal);
-		mlx_scroll_hook(fractal.mlx, &my_scrollhook ,&fractal);
-		mlx_loop_hook(fractal.mlx, &my_hook, &fractal);
-
-		mlx_loop(fractal.mlx);
-		mlx_terminate(fractal.mlx);
-		return (EXIT_SUCCESS);
 	}
-	else if (argc == 2 && strcmp(argv[1], "Julia") == 0)
+	else if (argc >= 2 && strcmp(argv[1], "Julia") == 0)
 	{
-		if (!(fractal.mlx = mlx_init(WIDTH, HEIGHT, "fract_ol", true)))
-			return (EXIT_FAILURE);
-		fractal.img = mlx_new_image(fractal.mlx, WIDTH, HEIGHT);
-		mlx_image_to_window(fractal.mlx, fractal.img, 0, 0);
 		fractal.set = 'J';
+		fractal.cx = ft_atof(argv[2]);
+		fractal.cy = ft_atof(argv[3]);
 		run_fractal(&fractal);
-
-		mlx_scroll_hook(fractal.mlx, &my_scrollhook ,&fractal);
-		mlx_loop_hook(fractal.mlx, &my_hook, &fractal);
-		mlx_key_hook(fractal.mlx,my_key_func,&fractal);
-		mlx_loop(fractal.mlx);
-		mlx_terminate(fractal.mlx);
-		return (EXIT_SUCCESS);
 	}
-	else if (argc == 2 && strcmp(argv[1], "Born") == 0)
+	else if (argc == 2 && strcmp(argv[1], "Burning-Ship") == 0)
 	{
-		if (!(fractal.mlx = mlx_init(WIDTH, HEIGHT, "fract_ol", true)))
-			return (EXIT_FAILURE);
-		fractal.img = mlx_new_image(fractal.mlx, WIDTH, HEIGHT);
-		mlx_image_to_window(fractal.mlx, fractal.img, 0, 0);
+
 		fractal.set = 'B';
 		run_fractal(&fractal);
+	}
 
 		mlx_scroll_hook(fractal.mlx, &my_scrollhook ,&fractal);
 		mlx_loop_hook(fractal.mlx, &my_hook, &fractal);
 		mlx_key_hook(fractal.mlx,my_key_func,&fractal);
 		mlx_loop(fractal.mlx);
-		mlx_terminate(fractal.mlx);
+		// mlx_terminate(fractal.mlx);
 		return (EXIT_SUCCESS);
-	}
-/* 	else if (argc == 2 && strcmp(argv[1], "Both") == 0)
-	{
-		if (!(fractal.mlx = mlx_init(1610, HEIGHT, "fract_ol", true)))
-			return (EXIT_FAILURE);
-			fractal.img = mlx_new_image(fractal.mlx,WIDTH, HEIGHT);
-			draw_fractal_mandelbrot(&fractal);
-			mlx_image_to_window(fractal.mlx,fractal.img,0,0);
-			
-			fractal.img2 = mlx_new_image(fractal.mlx, WIDTH, HEIGHT);
-			mlx_image_to_window(fractal.mlx,fractal.img2,810,0);
-			draw_julia_set(&fractal);
-			mlx_scroll_hook(fractal.mlx, &my_scrollhook ,&fractal);
-			mlx_loop_hook(fractal.mlx, &hook, &fractal);
-			mlx_key_hook(fractal.mlx,my_key_func,&fractal);
-			mlx_loop(fractal.mlx);
-			mlx_terminate(fractal.mlx);
-			return (EXIT_SUCCESS);
-	} */
 
 }

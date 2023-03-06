@@ -11,8 +11,9 @@
 # **************************************************************************** #
 
 NAME	:= fractal
-CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code -Ofast
+CFLAGS	:= -g -Wextra -Wall -Werror -Wunreachable-code -Ofast
 LIBMLX	:= ./MLX42
+
 
 HEADERS	:= -I ./include -I $(LIBMLX)/include
 LIBS	:= $(LIBMLX)/build/libmlx42.a -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit
@@ -22,13 +23,13 @@ OBJS	:= ${SRCS:.c=.o}
 all: libmlx $(NAME)
 
 libmlx:
-	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
+	@cmake $(LIBMLX) -DDEBUG=1 -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+	@$(CC) $(CFLAGS) $(ASAN_FLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
 
 clean:
 	@rm -f $(OBJS)
