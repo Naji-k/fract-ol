@@ -56,8 +56,9 @@ void	draw_julia_set(t_fractal *fractal)
 		y = -1;
 		while (++y < HEIGHT)
 		{
-			zx = remap(x, 0, fractal->width, fractal->_x, fractal->x);
-			zy = remap(y, 0, fractal->height, fractal->_y, fractal->y);
+			// zx = remap(x, 0, fractal->width, fractal->_x, fractal->x);
+			zx =  fractal->_x + x * fractal->re_factor;
+			zy = fractal->_y + y * fractal->im_factor;
 			iter = 1;
 			julia_set_iteration(fractal, zx, zy, &iter);
 			color_fractal(fractal, iter, x, y);
@@ -80,9 +81,7 @@ void	draw_burning_ship(t_fractal *fractal)
 			fractal->cx =  fractal->_x + x * fractal->re_factor;
 			// fractal->cy = remap(y, 0, fractal->height, fractal->_y, fractal->y);
 			fractal->cy =  fractal->_y + y * fractal->im_factor;
-			//z_real
 			zx = 0;
-			//z_imag
 			zy = 0;
 			iter = 0;
 			while (((zx * zx) + (zy * zy)) < 4 && (++iter <= fractal->max_iter))

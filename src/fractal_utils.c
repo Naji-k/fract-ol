@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "fractal.h"
-#include <string.h>
 
 void	run_fractal(t_fractal *fractal)
 {

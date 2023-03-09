@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <unistd.h>
+# include <stdlib.h>
 
 # define WIDTH 800
 # define HEIGHT 800
@@ -36,7 +37,6 @@ typedef struct s_fractal
 	double long	_y;
 	double long	x;
 	double long	_x;
-	double long	r;
 	double		cx;
 	double		cy;
 	double		re_factor;
@@ -60,7 +60,7 @@ float			remap(int value, float l1, float h1, float l2, float h2);
 int				check_input(int argc, char **argv, char **fractals_set,
 					t_fractal *fractal);
 void			print_available_fractals(char **fractals);
-int				get_rgba(int r, int g, int b, int a); //mlx42
+int				get_rgba(int r, int g, int b, int a);
 void			re_factor(t_fractal *fractal);
 void			draw_fractal_mandelbrot(t_fractal *fractal);
 float			get_percentage(float x1, float percentage);
@@ -69,6 +69,7 @@ void			draw_burning_ship(t_fractal *fractal);
 void			run_fractal(t_fractal *fractal);
 void			render_fractal_set(const char set, t_fractal *fractal);
 int				shuffle_color(int value);
+void			txt_on_screen(t_fractal* fractal);
 //moves
 void			move_up(t_fractal *fractal);
 void			move_down(t_fractal *fractal);
@@ -84,5 +85,5 @@ void			move_Y_percentage(t_fractal* fractal, float percentage);
 //zoom
 void			zoom_on_screen(t_fractal *fractal, char in_out);
 void			zoom_on_value(t_fractal *fractal, char in_out);
-void			 zoom_with_factor (t_fractal *fractal, char in_out);
+void			zoom_with_factor (t_fractal *fractal, char in_out);
 #endif
