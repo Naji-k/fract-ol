@@ -30,7 +30,7 @@ void my_key_func(mlx_key_data_t keydata, void* param)
 		// fractal->x = fractal->x * 0.95;
 		// fractal->_x = fractal->_x * 0.95;
 		re_factor(fractal);
-		run_fractal(fractal);
+		// run_fractal(fractal);
 
 		// printf("f->x=%Lf\n_x=%Lf\ny=%Lf\n_y=%Lf\nZ_level=%f\n", fractal->x, fractal->_x,
 		// 	fractal->y, fractal->_y, fractal->zoom_level);
@@ -46,50 +46,35 @@ void my_key_func(mlx_key_data_t keydata, void* param)
 		// fractal->_x -= fractal->_x * 1.05;
 		fractal->zoom_level--;
 		re_factor(fractal);
-		run_fractal(fractal);
+		// run_fractal(fractal);
 	}
 	if (keydata.key == MLX_KEY_C  && keydata.action == MLX_PRESS)
-	{
 		fractal->color = shuffle_color(fractal->color);
-		run_fractal(fractal);
-	}
 	if (keydata.key == MLX_KEY_D  && keydata.action == MLX_PRESS)
 	{
 		printf("f->x=%Lf\n_x=%Lf\ny=%Lf\n_y=%Lf\nmax_iter=%d\nfra.w=%f\n,fra.h=%f\nre_fac=%f\nim_fac=%f\nzoom=%f\n,zoom_level=%f\n", fractal->x,
 			fractal->_x, fractal->y, fractal->_y, fractal->max_iter,fractal->width,fractal->height, fractal->re_factor, fractal->im_factor, fractal->zoom,fractal->zoom_level);
 	}
-
 	if (keydata.key == MLX_KEY_0  && keydata.action == MLX_PRESS)
-	{
 		reset_defaults(fractal);
-		// re_factor(fractal);
-		run_fractal(fractal);
-	}
 	if (keydata.key == MLX_KEY_T  && keydata.action == MLX_PRESS)
 	{
 		// mouse_percentage(fractal);
-		run_fractal(fractal);
+		// run_fractal(fractal);
 	}
 	if (keydata.key == MLX_KEY_M  && keydata.action == MLX_PRESS)
-	{
 		fractal->set = 'M';
-		run_fractal(fractal);
-	}
 	if (keydata.key == MLX_KEY_B  && keydata.action == MLX_PRESS)
-	{
 		fractal->set = 'B';
-		run_fractal(fractal);
-	}
 	if(keydata.key == MLX_KEY_EQUAL && keydata.action == MLX_PRESS)
-	{
 		fractal->max_iter++;
-		run_fractal(fractal);
-	}
 	if(keydata.key == MLX_KEY_MINUS && keydata.action == MLX_PRESS)
-	{
 		fractal->max_iter--;
-		run_fractal(fractal);
-	}
+	if(keydata.key == MLX_KEY_H && keydata.action == MLX_PRESS)
+		show_hide_help(fractal);
+	if(keydata.key == MLX_KEY_R && keydata.action == MLX_PRESS)
+		fractal->scheme = change_color_scheme(fractal->scheme);
+	run_fractal(fractal);
 }
 
 
@@ -135,18 +120,14 @@ void re_factor (t_fractal *fractal)
 void	my_hook(void *param)
 {
 	t_fractal*	fractal;
-	float	X;
-	float	Y;
 	fractal = param;
 
 	if (mlx_is_key_down(fractal->mlx, MLX_KEY_J))
 	{
 		fractal->set = 'J';
 		mlx_get_mouse_pos(fractal->mlx,&fractal->pos_x,&fractal->pos_y);
-		X = remap(fractal->pos_x,0,WIDTH,fractal->_x,fractal->x) ;
-		Y = remap(fractal->pos_y,0,HEIGHT,fractal->y,fractal->_y);
-		fractal->cx = X;
-		fractal->cy = Y;
+		fractal->cx = remap(fractal->pos_x,0,WIDTH,fractal->_x,fractal->x) ;
+		fractal->cy = remap(fractal->pos_y,0,HEIGHT,fractal->y,fractal->_y);
 		run_fractal(fractal);
 	}
 	if (mlx_is_key_down(fractal->mlx, MLX_KEY_UP))
@@ -161,6 +142,7 @@ void	my_hook(void *param)
 
 void txt_on_screen(t_fractal* fractal)
 {
+
 	mlx_put_string(fractal->mlx, "C=change color mod", 10, 600);
 	mlx_put_string(fractal->mlx, "=:iteration++", 10, 620);
 	mlx_put_string(fractal->mlx, "-:iteration--", 10, 640);
@@ -168,6 +150,7 @@ void txt_on_screen(t_fractal* fractal)
 	mlx_put_string(fractal->mlx, "M:Mandelbrot", 10, 680);
 	mlx_put_string(fractal->mlx, "B:Burning-Ship", 10, 700);
 	mlx_put_string(fractal->mlx, "0: Reset", 10, 720);
+	mlx_put_string(fractal->mlx, "H:Hide menu", 10, 740);
 }
 
 int	main(int argc, char** argv)

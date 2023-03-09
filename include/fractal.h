@@ -15,12 +15,20 @@
 # include "./MLX42/MLX42.h"
 # include <math.h>
 # include <stdio.h>
+# include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <stdlib.h>
 
 # define WIDTH 800
 # define HEIGHT 800
+
+typedef struct s_coloring
+{
+	int			r;
+	int			g;
+	int			b;
+	int			value;
+}				t_coloring;
 
 typedef struct s_fractal
 {
@@ -43,7 +51,9 @@ typedef struct s_fractal
 	double		im_factor;
 	int			max_iter;
 	int			color;
+	int			scheme;
 	char		set;
+	int			help;
 	double long	scale_x;
 	double long	scale_y;
 }				t_fractal;
@@ -69,7 +79,10 @@ void			draw_burning_ship(t_fractal *fractal);
 void			run_fractal(t_fractal *fractal);
 void			render_fractal_set(const char set, t_fractal *fractal);
 int				shuffle_color(int value);
-void			txt_on_screen(t_fractal* fractal);
+void			txt_on_screen(t_fractal *fractal);
+void			show_hide_help(t_fractal *fractal);
+void			color_fractal(t_fractal *fractal, int iter, int x, int y);
+int			change_color_scheme(int color_number);
 //moves
 void			move_up(t_fractal *fractal);
 void			move_down(t_fractal *fractal);
@@ -81,9 +94,9 @@ double			ft_atof(const char *arr);
 void			mouse_percentage(t_fractal *fractal);
 void			move_percentage(t_fractal *fractal, int percentage);
 void			move_X_percentage(t_fractal *fractal, float percentage);
-void			move_Y_percentage(t_fractal* fractal, float percentage);
+void			move_Y_percentage(t_fractal *fractal, float percentage);
 //zoom
 void			zoom_on_screen(t_fractal *fractal, char in_out);
 void			zoom_on_value(t_fractal *fractal, char in_out);
-void			zoom_with_factor (t_fractal *fractal, char in_out);
+void			zoom_with_factor(t_fractal *fractal, char in_out);
 #endif
