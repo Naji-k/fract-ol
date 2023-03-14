@@ -12,30 +12,40 @@
 
 #include "fractal.h"
 
+static void	burning_ship_iteration(t_fractal *fractal, double zx, double zy,
+		int *iter)
+{
+	double	tempx;
+
+	while (((zx * zx) + (zy * zy)) < 4 && (*iter <= fractal->max_iter))
+	{
+		tempx = powf(zx, 2) - powf(zy, 2) + fractal->cx;
+		zy = fabs(2 * zx * zy) + fractal->cy;
+		zx = fabs(tempx);
+		*iter = *iter + 1;
+	}
+}
+
 void	draw_burning_ship(t_fractal *fractal)
 {
-	double zx, zy, tempx;
-	int x, y;
-	int iter;
+	int		iter;
+	double	zx;
+	double	zy;
+	int		x;
+	int		y;
+
 	x = -1;
 	while (++x < WIDTH)
 	{
 		y = -1;
 		while (++y < HEIGHT)
 		{
-			// fractal->cx = remap(x, 0, fractal->width, fractal->_x, fractal->x);
-			fractal->cx =  fractal->_x + x * fractal->re_factor;
-			// fractal->cy = remap(y, 0, fractal->height, fractal->_y, fractal->y);
-			fractal->cy =  fractal->_y + y * fractal->im_factor;
+			fractal->cx = remap(x, fractal->width, fractal->_x, fractal->x);
+			fractal->cy = remap(y, fractal->height, fractal->_y, fractal->y);
 			zx = 0;
 			zy = 0;
 			iter = 0;
-			while (((zx * zx) + (zy * zy)) < 4 && (++iter <= fractal->max_iter))
-			{
-				tempx = powf(zx, 2) - powf(zy, 2) + fractal->cx;
-				zy = fabs(2 * zx * zy) + fractal->cy;
-				zx = fabs(tempx);
-			}
+			burning_ship_iteration(fractal, zx, zy, &iter);
 			color_fractal(fractal, iter, x, y);
 		}
 	}

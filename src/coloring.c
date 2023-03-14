@@ -12,6 +12,11 @@
 
 #include "fractal.h"
 
+int	get_rgba(int r, int g, int b, int a)
+{
+	return (r << 24 | g << 16 | b << 8 | a);
+}
+
 int	coloring(t_fractal *fractal, int iter)
 {
 	int	color;
@@ -28,10 +33,11 @@ int	coloring(t_fractal *fractal, int iter)
 		color = get_rgba(iter * fractal->color, iter * fractal->color, iter
 				* fractal->color, 255);
 	else
-		color = get_rgba(iter + fractal->color, (iter)*fractal->color, iter
+		color = get_rgba(iter + fractal->color, (iter) * fractal->color, iter
 				* fractal->color * 11, 255);
 	return (color);
 }
+
 void	color_fractal(t_fractal *fractal, int iter, int x, int y)
 {
 	int	color;
@@ -44,6 +50,7 @@ void	color_fractal(t_fractal *fractal, int iter, int x, int y)
 		mlx_put_pixel(fractal->img, x, y, color);
 	}
 }
+
 int	shuffle_color(int value)
 {
 	if (value <= 1000)
@@ -52,6 +59,7 @@ int	shuffle_color(int value)
 		value /= 30;
 	return (value);
 }
+
 int	change_color_scheme(int color_number)
 {
 	if (color_number > 4)

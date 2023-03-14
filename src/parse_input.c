@@ -12,9 +12,10 @@
 
 #include "fractal.h"
 
-int	check_input(int argc, char **argv, char **fractals_set, t_fractal *fractal)
+int	check_input(int argc, char **argv, t_fractal *fractal)
 {
-	int	i;
+	const char	*fractals_set[] = {"Mandelbrot", "Julia", "Burning-Ship"};
+	int			i;
 
 	i = 0;
 	if (argc < 2)
@@ -23,8 +24,7 @@ int	check_input(int argc, char **argv, char **fractals_set, t_fractal *fractal)
 	{
 		while (strcmp(argv[1], fractals_set[i]) != 0)
 		{
-			i++;
-			if (i > 2)
+			if (++i > 2)
 			{
 				print_available_fractals(fractals_set);
 				return (1);
@@ -41,10 +41,11 @@ int	check_input(int argc, char **argv, char **fractals_set, t_fractal *fractal)
 	return (1);
 }
 
-void print_available_fractals (char **fractals)
+void	print_available_fractals(const char **fractals)
 {
-	int i;
+	int	i;
+
 	i = 0;
-	while(i < 3)
-		printf("%s\n",fractals[i++]);
+	while (i < 3)
+		printf("%s\n", fractals[i++]);
 }

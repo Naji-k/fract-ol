@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME	:= fractal
-CFLAGS	:= -g -Wextra -Wall -Werror -Wunreachable-code -Ofast
+CFLAGS	:= -g -Wextra -Wall -Werror -Wunreachable-code -Ofast -fsanitize=address
 LIBMLX	:= ./MLX42
 
 
