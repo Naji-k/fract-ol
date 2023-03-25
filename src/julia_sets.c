@@ -12,8 +12,7 @@
 
 #include "fractal.h"
 
-static void	julia_set_iteration(t_fractal *fractal, double zx, double zy,
-		int *iter)
+void	julia_set_iteration(t_fractal *fractal, double zx, double zy, int *iter)
 {
 	double	tempx;
 

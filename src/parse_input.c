@@ -14,23 +14,23 @@
 
 int	check_input(int argc, char **argv, t_fractal *fractal)
 {
-	const char	*fractals_set[] = {"Mandelbrot", "Julia", "Burning-Ship"};
+	const char	*a_sets[] = {"Mandelbrot", "Julia", "Burning-Ship"};
 	int			i;
 
 	i = 0;
 	if (argc < 2)
-		print_available_fractals(fractals_set);
+		print_available_fractals(a_sets);
 	else
 	{
-		while (strcmp(argv[1], fractals_set[i]) != 0)
+		while (ft_strncmp(argv[1], a_sets[i], ft_strlen(a_sets[i])) != 0)
 		{
 			if (++i > 2)
 			{
-				print_available_fractals(fractals_set);
+				print_available_fractals(a_sets);
 				return (1);
 			}
 		}
-		fractal->set = fractals_set[i][0];
+		fractal->set = a_sets[i][0];
 		if (fractal->set == 'J' && argv[2] != NULL && argv[3] != NULL)
 		{
 			fractal->cx = ft_atof(argv[2]);
@@ -47,5 +47,5 @@ void	print_available_fractals(const char **fractals)
 
 	i = 0;
 	while (i < 3)
-		printf("%s\n", fractals[i++]);
+		ft_printf("%s\n", fractals[i++]);
 }

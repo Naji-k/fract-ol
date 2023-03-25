@@ -56,26 +56,27 @@ void	my_scroll_hook(double xdelta, double ydelta, void *param)
 		fractal->zoom_level++;
 	}
 	if (xdelta < 0)
-		puts("Sliiiide to the left!");
+		return ;
 	else if (xdelta > 0)
-		puts("Sliiiide to the right!");
+		return ;
 	run_fractal(fractal);
 }
 
 void	my_hook(void *param)
 {
 	t_fractal	*fractal;
-	t_mouse		*mouse;
 
 	fractal = param;
-	mouse = fractal->mouse;
 	if (mlx_is_key_down(fractal->mlx, MLX_KEY_J))
 	{
 		fractal->set = 'J';
-		mlx_get_mouse_pos(fractal->mlx, &mouse->pos_x, &mouse->pos_y);
-		fractal->cx = remap(mouse->pos_x, WIDTH, fractal->_x, fractal->x);
-		fractal->cy = remap(mouse->pos_y, HEIGHT, fractal->y, fractal->_y);
-		run_fractal(fractal);
+		mlx_get_mouse_pos(fractal->mlx, &fractal->mouse->pos_x,
+			&fractal->mouse->pos_y);
+		fractal->cx = remap(fractal->mouse->pos_x, WIDTH, fractal->_x,
+				fractal->x);
+		fractal->cy = remap(fractal->mouse->pos_y, HEIGHT, fractal->y,
+				fractal->_y);
+		render_fractal_set(fractal->set, fractal);
 	}
 	if (mlx_is_key_down(fractal->mlx, MLX_KEY_UP))
 		move_down(fractal);

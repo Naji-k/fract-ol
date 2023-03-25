@@ -66,10 +66,10 @@ void	txt_on_screen(t_fractal *fractal)
 	if (fractal->help % 2)
 	{
 		mlx_put_string(fractal->mlx, "Arrows: to move", 10, 600);
-		mlx_put_string(fractal->mlx, "C: change colors", 10, 620);
-		mlx_put_string(fractal->mlx, "S: change color scheme", 10, 640);
-		mlx_put_string(fractal->mlx, "=/- =iteration (+/-)", 10, 660);
-		mlx_put_string(fractal->mlx, "J:Julia", 10, 680);
+		mlx_put_string(fractal->mlx, "C: Change colors", 10, 620);
+		mlx_put_string(fractal->mlx, "S: Change color scheme", 10, 640);
+		mlx_put_string(fractal->mlx, "=/- iteration (+/-)", 10, 660);
+		mlx_put_string(fractal->mlx, "J: Julia", 10, 680);
 		mlx_put_string(fractal->mlx, "M: Mandelbrot", 10, 700);
 		mlx_put_string(fractal->mlx, "B: Burning-Ship", 10, 720);
 		mlx_put_string(fractal->mlx, "0: Reset", 10, 740);

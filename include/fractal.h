@@ -13,10 +13,9 @@
 #ifndef FRACTAL_H
 # define FRACTAL_H
 # include "./MLX42/MLX42.h"
+# include "ft_printf.h"
 # include <math.h>
-# include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
 # include <unistd.h>
 
 # define WIDTH 800
