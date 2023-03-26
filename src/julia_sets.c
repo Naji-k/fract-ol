@@ -16,7 +16,7 @@ void	julia_set_iteration(t_fractal *fractal, double zx, double zy, int *iter)
 {
 	double	tempx;
 
-	while (((zx * zx) + (zy * zy)) < 4 * fractal->x
+	while (((zx * zx) + (zy * zy)) < 8
 		&& (*iter <= fractal->max_iter))
 	{
 		tempx = (zx * zx) - (zy * zy) + fractal->cx;
@@ -40,8 +40,8 @@ void	draw_julia_set(t_fractal *fractal)
 		y = -1;
 		while (++y < HEIGHT)
 		{
-			zx = remap(x, fractal->width, fractal->_x, fractal->x);
-			zy = remap(y, fractal->width, fractal->_y, fractal->y);
+			zx = remap(x, WIDTH, fractal->_x, fractal->x);
+			zy = remap(y, HEIGHT, fractal->_y, fractal->y);
 			iter = 1;
 			julia_set_iteration(fractal, zx, zy, &iter);
 			color_fractal(fractal, iter, x, y);

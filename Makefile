@@ -32,7 +32,7 @@ all:  $(NAME)
 
 $(OBJ_DIR)/%.o: %.c
 		@mkdir -p $(@D)
-		$(CC) $(CFLAGS) $(HEADERS) $(ASAN_FLAGS) -o $@ -c $<  && printf "Compiling: $(notdir $<)"
+		@$(CC) $(CFLAGS) $(HEADERS) $(ASAN_FLAGS) -o $@ -c $<  && printf "Compiling: $(notdir $<)"
 
 $(NAME):	$(LIB_LIBMLX) $(LIB_PRINTF) $(OBJS)
 	$(CC) $(CFLAGS) $(HEADERS) $(OBJS) $(LIBS) $(LIB_PRINTF)  -o $(NAME)
