@@ -15,11 +15,16 @@
 void	julia_set_iteration(t_fractal *fractal, double zx, double zy, int *iter)
 {
 	double	tempx;
+	double	p_zx;
+	double	p_zy;
 
-	while (((zx * zx) + (zy * zy)) < 8
-		&& (*iter <= fractal->max_iter))
+	p_zx = zx * zx;
+	p_zy = zy * zy;
+	while ((p_zx + p_zy) < 8 && (*iter <= fractal->max_iter))
 	{
-		tempx = (zx * zx) - (zy * zy) + fractal->cx;
+		p_zx = zx * zx;
+		p_zy = zy * zy;
+		tempx = (p_zx) - (p_zy) + fractal->cx;
 		zy = (2 * zx * zy) + fractal->cy;
 		zx = tempx;
 		*iter = *iter + 1;
